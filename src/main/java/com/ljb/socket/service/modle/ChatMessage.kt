@@ -3,9 +3,6 @@ package com.ljb.socket.service.modle
 class ChatMessage {
 
     companion object {
-        //event
-        const val EVENT_CHAT = "chat"
-
         //消息状态
         const val MSG_STATUS_SEND_ING = 0
         const val MSG_STATUS_SEND_SUCCESS = 1
@@ -18,6 +15,7 @@ class ChatMessage {
 
         //聊天相关cmd
         const val CMD_RECEIVE_ACK = 1
+        const val CMD_CONTACT_LIST = 2
     }
 
     var fromId: String = ""
