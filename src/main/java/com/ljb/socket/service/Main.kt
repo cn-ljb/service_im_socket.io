@@ -7,7 +7,7 @@ import com.corundumstudio.socketio.SocketIOServer
 import com.ljb.socket.service.modle.ChatMessage
 import com.ljb.socket.service.modle.SocketEvent
 import com.ljb.socket.service.modle.UserBean
-import com.ljb.socket.service.utils.ChatMessageUtils
+import com.ljb.socket.service.utils.ChatUtils
 import com.ljb.socket.service.utils.JsonParser
 
 //Socket客户端容器
@@ -82,7 +82,7 @@ fun initAboutConnectListener(socketService: SocketIOServer) {
  * */
 fun handleContactList(socketService: SocketIOServer) {
     val body = JsonParser.toJson(mUserMap.values)
-    val chatMessage = ChatMessageUtils.getContactListChatMessage(body)
+    val chatMessage = ChatUtils.getContactListChatMessage(body)
     val msgStr = JsonParser.toJson(chatMessage)
     socketService.broadcastOperations.sendEvent(SocketEvent.EVENT_CHAT, msgStr)
 }
@@ -127,10 +127,8 @@ fun handleChatMessage(chatMessage: ChatMessage, ackRequest: AckRequest) {
             mCacheChatMessageMap[chatMessage.toId] = cacheList
         }
 
-        //145731353 回调给客户端，发送成功
-        chatMessage.type = ChatMessage.TYPE_CMD
-        chatMessage.cmd = ChatMessage.CMD_RECEIVE_ACK
-        ackRequest.sendAckData(JsonParser.toJson(chatMessage))
+        // 回调给客户端，发送成功
+        ackRequest.sendAckData(ChatUtils.getAck(chatMessage))
     }
 }
 

@@ -5,7 +5,7 @@ import com.ljb.socket.service.modle.ChatMessage
 import java.util.Random
 
 
-object ChatMessageUtils {
+object ChatUtils {
 
 
     fun getContactListChatMessage(body: String): ChatMessage {
@@ -55,6 +55,17 @@ object ChatMessageUtils {
 
         }
         return sf.toString()
+    }
+
+    fun copyChatMessage(chatMessage: ChatMessage): ChatMessage {
+        return JsonParser.fromJsonObj(JsonParser.toJson(chatMessage), ChatMessage::class.java)
+    }
+
+    fun getAck(chatMessage: ChatMessage): String {
+        val ackChatMessage = ChatUtils.copyChatMessage(chatMessage)
+        ackChatMessage.type = ChatMessage.TYPE_CMD
+        ackChatMessage.cmd = ChatMessage.CMD_RECEIVE_ACK
+        return JsonParser.toJson(ackChatMessage)
     }
 
 }
