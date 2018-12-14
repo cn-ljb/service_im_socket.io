@@ -56,11 +56,11 @@ fun initAboutConnectListener(socketService: SocketIOServer) {
 
     socketService.addConnectListener { socketClient ->
         val user = getUserByClient(socketClient) ?: return@addConnectListener
-        println("connect uid : ${user.uid} -> ${user.name}")
+        println("connect uid : ${user.uid} -> ${user.name} count:${mClientMap.size}")
         mClientMap.put(user.uid, socketClient)
         mUserMap.put(user.uid, user)
 
-        //此处方便客户端拉取当前所有联系人，实际开发优先考虑接口返回在线联系人
+        //此处方便客户端拉取当前所有联系人，实际开发优先考虑接口返回联系人
         handleContactList(socketService)
 
         //发送离线数据
