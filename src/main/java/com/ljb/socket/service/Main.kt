@@ -9,11 +9,12 @@ import com.ljb.socket.service.modle.SocketEvent
 import com.ljb.socket.service.modle.UserBean
 import com.ljb.socket.service.utils.ChatUtils
 import com.ljb.socket.service.utils.JsonParser
+import java.util.*
 
 //Socket客户端容器
 private val mClientMap = HashMap<String, SocketIOClient>()
 //离线消息容器
-private val mCacheChatMessageMap = HashMap<String, ArrayList<ChatMessage>>()
+private val mCacheChatMessageMap = WeakHashMap<String, ArrayList<ChatMessage>>()
 //在线用户
 private val mUserMap = HashMap<String, UserBean>()
 
@@ -56,9 +57,9 @@ fun initAboutConnectListener(socketService: SocketIOServer) {
 
     socketService.addConnectListener { socketClient ->
         val user = getUserByClient(socketClient) ?: return@addConnectListener
-        println("connect uid : ${user.uid} -> ${user.name} count:${mClientMap.size}")
         mClientMap.put(user.uid, socketClient)
         mUserMap.put(user.uid, user)
+        println("connect uid : ${user.uid} -> ${user.name} count:${mClientMap.size}")
 
         //此处方便客户端拉取当前所有联系人，实际开发优先考虑接口返回联系人
         handleContactList(socketService)
@@ -69,10 +70,10 @@ fun initAboutConnectListener(socketService: SocketIOServer) {
 
     socketService.addDisconnectListener { socketClient ->
         val user = getUserByClient(socketClient) ?: return@addDisconnectListener
-        println("disconnect uid : ${user.uid} -> ${user.name}")
         mClientMap[user.uid]?.disconnect()
         mClientMap.remove(user.uid)
         mUserMap.remove(user.uid)
+        println("disconnect uid : ${user.uid} -> ${user.name} count:${mClientMap.size}")
     }
 
 }
