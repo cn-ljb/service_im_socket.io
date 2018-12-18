@@ -19,8 +19,8 @@ private val mCacheChatMessageMap = WeakHashMap<String, ArrayList<ChatMessage>>()
 private val mUserMap = HashMap<String, UserBean>()
 
 /**
- * 开启服务入口
- * */
+ * 开启服务入口（TODO 服务器端代码仅供API参考，未作任何持久化存储）
+* */
 fun main(args: Array<String>) {
     println("socket service main start")
 

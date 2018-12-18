@@ -65,6 +65,7 @@ object ChatUtils {
         val ackChatMessage = ChatUtils.copyChatMessage(chatMessage)
         ackChatMessage.type = ChatMessage.TYPE_CMD
         ackChatMessage.cmd = ChatMessage.CMD_RECEIVE_ACK
+        ackChatMessage.status = ChatMessage.MSG_STATUS_SEND_SUCCESS
         return JsonParser.toJson(ackChatMessage)
     }
 
